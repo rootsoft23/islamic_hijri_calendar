@@ -42,6 +42,9 @@ class IslamicHijriCalendar extends StatefulWidget {
   ///set dates which are not included in current month should show disabled or enabled
   final bool? isDisablePreviousNextMonthDates;
 
+  ///set calendar language 'en' for English, 'ar' for Arabic
+  final String language;
+
   const IslamicHijriCalendar({
     super.key,
     this.isHijriView = true,
@@ -56,6 +59,7 @@ class IslamicHijriCalendar extends StatefulWidget {
     this.fontFamilyName = "",
     this.isGoogleFont = false,
     this.isDisablePreviousNextMonthDates = true,
+    this.language = 'en',
   });
 
   @override
@@ -63,8 +67,16 @@ class IslamicHijriCalendar extends StatefulWidget {
 }
 
 class _HijriCalendarWidgetsState extends State<IslamicHijriCalendar> {
-  HijriViewModel viewmodel = HijriViewModel();
+  late HijriViewModel viewmodel;
   List<DateTime> days = [];
+
+  @override
+  void initState() {
+    super.initState();
+    viewmodel = HijriViewModel();
+    viewmodel.adjustmentValue = widget.adjustmentValue;
+    HijriCalendarConfig.setLocal(widget.language);
+  }
 
   ///update calendar view when directly value change form user side without set state
   @override
